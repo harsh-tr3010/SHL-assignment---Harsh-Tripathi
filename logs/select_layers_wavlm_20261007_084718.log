@@ -1,0 +1,26 @@
+2026-10-07 08:47:18 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/select_layers_wavlm_20261007_084718.log
+2026-10-07 08:47:20 | INFO | layers  0- 0 | CV RMSE 0.7915 | Pearson 0.6292
+2026-10-07 08:47:21 | INFO | layers  1- 1 | CV RMSE 0.7654 | Pearson 0.6645
+2026-10-07 08:47:21 | INFO | layers  2- 2 | CV RMSE 0.7343 | Pearson 0.7055
+2026-10-07 08:47:22 | INFO | layers  3- 3 | CV RMSE 0.6993 | Pearson 0.7384
+2026-10-07 08:47:23 | INFO | layers  4- 4 | CV RMSE 0.6835 | Pearson 0.7500
+2026-10-07 08:47:24 | INFO | layers  5- 5 | CV RMSE 0.6494 | Pearson 0.7749
+2026-10-07 08:47:24 | INFO | layers  6- 6 | CV RMSE 0.6210 | Pearson 0.7971
+2026-10-07 08:47:25 | INFO | layers  7- 7 | CV RMSE 0.5958 | Pearson 0.8147
+2026-10-07 08:47:26 | INFO | layers  8- 8 | CV RMSE 0.5956 | Pearson 0.8136
+2026-10-07 08:47:27 | INFO | layers  9- 9 | CV RMSE 0.5896 | Pearson 0.8180
+2026-10-07 08:47:28 | INFO | layers 10-10 | CV RMSE 0.5898 | Pearson 0.8174
+2026-10-07 08:47:28 | INFO | layers 11-11 | CV RMSE 0.5993 | Pearson 0.8112
+2026-10-07 08:47:29 | INFO | layers 12-12 | CV RMSE 0.6237 | Pearson 0.7950
+2026-10-07 08:47:30 | INFO | layers  1- 3 | CV RMSE 0.7193 | Pearson 0.7181
+2026-10-07 08:47:31 | INFO | layers  1- 6 | CV RMSE 0.6584 | Pearson 0.7709
+2026-10-07 08:47:32 | INFO | layers  1- 9 | CV RMSE 0.6203 | Pearson 0.7988
+2026-10-07 08:47:32 | INFO | layers  1-12 | CV RMSE 0.6099 | Pearson 0.8056
+2026-10-07 08:47:33 | INFO | layers  4- 6 | CV RMSE 0.6447 | Pearson 0.7792
+2026-10-07 08:47:33 | INFO | layers  4- 9 | CV RMSE 0.6105 | Pearson 0.8041
+2026-10-07 08:47:34 | INFO | layers  4-12 | CV RMSE 0.6036 | Pearson 0.8086
+2026-10-07 08:47:34 | INFO | layers  7- 9 | CV RMSE 0.5957 | Pearson 0.8137
+2026-10-07 08:47:35 | INFO | layers  7-12 | CV RMSE 0.5963 | Pearson 0.8131
+2026-10-07 08:47:35 | INFO | layers 10-12 | CV RMSE 0.5977 | Pearson 0.8118
+2026-10-07 08:47:35 | INFO | best layers (9, 9) (CV RMSE 0.5896)
+2026-10-07 08:47:45 | INFO | rewrote feature group wavlm

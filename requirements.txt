@@ -1,0 +1,25 @@
+# torch / torchaudio CUDA 12.4 build:
+#   pip install torch==2.6.0 torchaudio==2.6.0 --index-url https://download.pytorch.org/whl/cu124
+torch==2.6.0
+torchaudio==2.6.0
+faster-whisper==1.2.1
+ctranslate2==4.8.2
+transformers==5.18.0
+sentence-transformers==6.1.0
+sentencepiece
+protobuf
+accelerate
+bitsandbytes          # only for llm_judge.py
+librosa==1.0.0
+soundfile==0.14.0
+numpy==2.5.3
+pandas==3.0.6
+pyarrow==25.0.1
+scipy==1.18.1
+scikit-learn==1.9.1
+lightgbm==4.7.0
+joblib==1.6.0
+matplotlib==3.11.2
+seaborn==0.13.2
+jupyter==1.1.1
+ipykernel==7.4.0

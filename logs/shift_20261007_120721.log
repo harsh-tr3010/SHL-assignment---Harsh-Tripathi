@@ -1,0 +1,4 @@
+2026-10-07 12:07:21 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/shift_20261007_120721.log
+2026-10-07 12:07:22 | INFO | train-vs-test AUC (features ['handcrafted', 'audio', 'embedding_pca', 'wavlm_large_pca']): 0.828
+2026-10-07 12:07:22 | INFO | weights: min 0.27 | median 0.48 | max 6.63 | effective sample size 278 of 732
+2026-10-07 12:07:22 | INFO | saved train_shift_weight.parquet

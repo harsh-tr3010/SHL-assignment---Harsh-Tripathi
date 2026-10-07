@@ -1,0 +1,13 @@
+2026-10-07 08:26:23 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/audio_embed_20261007_082623.log
+2026-10-07 08:26:28 | INFO | model=/mnt/d/models/wavlm-base-plus layers=[4, 5, 6, 7, 8, 9]
+2026-10-07 08:27:16 | INFO | train 100/769 (0.8 min)
+2026-10-07 08:28:02 | INFO | train 200/769 (1.6 min)
+2026-10-07 08:28:41 | INFO | train 300/769 (2.2 min)
+2026-10-07 08:29:21 | INFO | train 400/769 (2.9 min)
+2026-10-07 08:30:02 | INFO | train 500/769 (3.6 min)
+2026-10-07 08:30:42 | INFO | train 600/769 (4.2 min)
+2026-10-07 08:31:26 | INFO | train 700/769 (5.0 min)
+2026-10-07 08:32:02 | INFO | train done (769 clips, 5.6 min)
+2026-10-07 08:32:48 | INFO | test 100/216 (0.8 min)
+2026-10-07 08:33:29 | INFO | test 200/216 (1.4 min)
+2026-10-07 08:33:40 | INFO | test done (216 clips, 1.6 min)

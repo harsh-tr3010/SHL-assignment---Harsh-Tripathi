@@ -1,0 +1,40 @@
+2026-10-07 09:37:19 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/finetune_audio_wavlm_ft_20261007_093719.log
+2026-10-07 09:37:19 | INFO | args: {'model': '/mnt/d/models/wavlm-base-plus', 'name': 'wavlm_ft', 'folds': 5, 'epochs': 6, 'lr': 3e-05, 'batch': 2, 'accum': 4, 'crop_s': 15.0, 'seed': 42}
+2026-10-07 09:37:56 | INFO | loaded 732 train / 216 test clips in 0.6 min
+2026-10-07 09:40:59 | INFO | fold 1 epoch 1 | train MSE 0.8215 | val RMSE 0.7557 | val Pearson 0.7428 | 3.0 min
+2026-10-07 09:43:39 | INFO | fold 1 epoch 2 | train MSE 0.4518 | val RMSE 0.6008 | val Pearson 0.8047 | 5.7 min
+2026-10-07 09:46:24 | INFO | fold 1 epoch 3 | train MSE 0.3260 | val RMSE 0.6180 | val Pearson 0.8146 | 8.5 min
+2026-10-07 09:49:09 | INFO | fold 1 epoch 4 | train MSE 0.2963 | val RMSE 0.5692 | val Pearson 0.8440 | 11.2 min
+2026-10-07 09:51:57 | INFO | fold 1 epoch 5 | train MSE 0.2202 | val RMSE 0.5768 | val Pearson 0.8438 | 14.0 min
+2026-10-07 09:54:39 | INFO | fold 1 epoch 6 | train MSE 0.1759 | val RMSE 0.5804 | val Pearson 0.8443 | 16.7 min
+2026-10-07 10:02:01 | INFO | fold 1 final val RMSE 0.5804 (24.1 min) | layer weights peak at layer 9
+2026-10-07 10:05:14 | INFO | fold 2 epoch 1 | train MSE 0.8725 | val RMSE 0.7720 | val Pearson 0.6559 | 3.2 min
+2026-10-07 10:07:56 | INFO | fold 2 epoch 2 | train MSE 0.4910 | val RMSE 0.6573 | val Pearson 0.7769 | 5.9 min
+2026-10-07 10:11:30 | INFO | fold 2 epoch 3 | train MSE 0.3596 | val RMSE 0.6173 | val Pearson 0.8054 | 9.5 min
+2026-10-07 10:14:07 | INFO | fold 2 epoch 4 | train MSE 0.2684 | val RMSE 0.7470 | val Pearson 0.7982 | 12.1 min
+2026-10-07 10:16:52 | INFO | fold 2 epoch 5 | train MSE 0.2000 | val RMSE 0.6404 | val Pearson 0.7923 | 14.9 min
+2026-10-07 10:19:26 | INFO | fold 2 epoch 6 | train MSE 0.1925 | val RMSE 0.6399 | val Pearson 0.7923 | 17.4 min
+2026-10-07 10:24:44 | INFO | fold 2 final val RMSE 0.6399 (22.7 min) | layer weights peak at layer 9
+2026-10-07 10:28:03 | INFO | fold 3 epoch 1 | train MSE 0.9037 | val RMSE 0.7288 | val Pearson 0.7427 | 3.3 min
+2026-10-07 10:31:31 | INFO | fold 3 epoch 2 | train MSE 0.5177 | val RMSE 0.6357 | val Pearson 0.7848 | 6.8 min
+2026-10-07 10:34:08 | INFO | fold 3 epoch 3 | train MSE 0.3710 | val RMSE 0.6628 | val Pearson 0.7923 | 9.4 min
+2026-10-07 10:37:13 | INFO | fold 3 epoch 4 | train MSE 0.3143 | val RMSE 0.7176 | val Pearson 0.7851 | 12.5 min
+2026-10-07 10:40:04 | INFO | fold 3 epoch 5 | train MSE 0.2159 | val RMSE 0.6189 | val Pearson 0.7990 | 15.3 min
+2026-10-07 10:43:32 | INFO | fold 3 epoch 6 | train MSE 0.1920 | val RMSE 0.6259 | val Pearson 0.7952 | 18.8 min
+2026-10-07 10:50:45 | INFO | fold 3 final val RMSE 0.6259 (26.0 min) | layer weights peak at layer 8
+2026-10-07 10:54:37 | INFO | fold 4 epoch 1 | train MSE 0.8476 | val RMSE 0.7415 | val Pearson 0.7119 | 3.9 min
+2026-10-07 10:57:32 | INFO | fold 4 epoch 2 | train MSE 0.4858 | val RMSE 0.7001 | val Pearson 0.7542 | 6.8 min
+2026-10-07 11:00:43 | INFO | fold 4 epoch 3 | train MSE 0.3791 | val RMSE 0.6201 | val Pearson 0.7941 | 10.0 min
+2026-10-07 11:03:33 | INFO | fold 4 epoch 4 | train MSE 0.2915 | val RMSE 0.6411 | val Pearson 0.7930 | 12.8 min
+2026-10-07 11:07:09 | INFO | fold 4 epoch 5 | train MSE 0.2159 | val RMSE 0.5975 | val Pearson 0.8116 | 16.4 min
+2026-10-07 11:10:14 | INFO | fold 4 epoch 6 | train MSE 0.2017 | val RMSE 0.5969 | val Pearson 0.8147 | 19.5 min
+2026-10-07 11:16:08 | INFO | fold 4 final val RMSE 0.5969 (25.4 min) | layer weights peak at layer 8
+2026-10-07 11:18:51 | INFO | fold 5 epoch 1 | train MSE 0.9505 | val RMSE 0.9473 | val Pearson 0.5969 | 2.7 min
+2026-10-07 11:21:22 | INFO | fold 5 epoch 2 | train MSE 0.5232 | val RMSE 0.6086 | val Pearson 0.8097 | 5.2 min
+2026-10-07 11:23:52 | INFO | fold 5 epoch 3 | train MSE 0.3564 | val RMSE 0.5977 | val Pearson 0.8119 | 7.7 min
+2026-10-07 11:26:24 | INFO | fold 5 epoch 4 | train MSE 0.2641 | val RMSE 0.5826 | val Pearson 0.8282 | 10.3 min
+2026-10-07 11:28:55 | INFO | fold 5 epoch 5 | train MSE 0.2050 | val RMSE 0.5725 | val Pearson 0.8300 | 12.8 min
+2026-10-07 11:31:33 | INFO | fold 5 epoch 6 | train MSE 0.1722 | val RMSE 0.5592 | val Pearson 0.8337 | 15.4 min
+2026-10-07 11:36:40 | INFO | fold 5 final val RMSE 0.5592 (20.5 min) | layer weights peak at layer 8
+2026-10-07 11:36:40 | INFO | wavlm_ft train RMSE 0.3494 | OOF RMSE 0.6012 | OOF Pearson 0.8096
+2026-10-07 11:36:44 | INFO | saved wavlm_ft OOF / test predictions

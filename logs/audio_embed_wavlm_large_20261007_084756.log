@@ -1,0 +1,14 @@
+2026-10-07 08:47:56 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/audio_embed_wavlm_large_20261007_084756.log
+2026-10-07 08:48:21 | INFO | model=/mnt/d/models/wavlm-large name=wavlm_large
+2026-10-07 08:51:22 | INFO | train 100/769 (3.0 min)
+2026-10-07 08:53:58 | INFO | train 200/769 (5.6 min)
+2026-10-07 08:56:18 | INFO | train 300/769 (8.0 min)
+2026-10-07 08:58:53 | INFO | train 400/769 (10.5 min)
+2026-10-07 09:01:30 | INFO | train 500/769 (13.1 min)
+2026-10-07 09:04:00 | INFO | train 600/769 (15.6 min)
+2026-10-07 09:06:41 | INFO | train 700/769 (18.3 min)
+2026-10-07 09:08:21 | INFO | train done (769 clips, 20.0 min)
+2026-10-07 09:10:30 | INFO | test 100/216 (2.1 min)
+2026-10-07 09:12:46 | INFO | test 200/216 (4.4 min)
+2026-10-07 09:13:06 | INFO | test done (216 clips, 4.7 min)
+2026-10-07 09:13:20 | INFO | wrote feature group wavlm_large from layers [6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18]

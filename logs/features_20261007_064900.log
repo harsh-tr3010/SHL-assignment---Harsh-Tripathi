@@ -1,0 +1,10 @@
+2026-10-07 06:49:00 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/features_20261007_064900.log
+2026-10-07 06:49:00 | INFO | device=cuda
+2026-10-07 06:49:01 | INFO | train: 769 transcripts
+2026-10-07 06:49:01 | INFO | train handcrafted (769, 22)
+2026-10-07 06:49:43 | INFO | train grammar (CoLA) (769, 4) | mean acceptability 0.626
+2026-10-07 06:50:02 | INFO | train embedding (769, 768)
+2026-10-07 06:50:03 | INFO | test: 216 transcripts
+2026-10-07 06:50:03 | INFO | test handcrafted (216, 22)
+2026-10-07 06:50:15 | INFO | test grammar (CoLA) (216, 4) | mean acceptability 0.611
+2026-10-07 06:50:23 | INFO | test embedding (216, 768)

@@ -1,0 +1,14 @@
+.venv/
+data/
+__pycache__/
+.ipynb_checkpoints/
+*.pyc
+*.zip
+artifacts/cache/
+
+# competition-derived data and test predictions are not published
+artifacts/transcripts/
+artifacts/features/
+artifacts/predictions/
+submissions/
+submission.csv

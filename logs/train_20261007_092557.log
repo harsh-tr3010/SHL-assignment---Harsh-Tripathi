@@ -1,0 +1,93 @@
+2026-10-07 09:25:57 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/train_20261007_092557.log
+2026-10-07 09:25:57 | INFO | folds=5 repeats=3
+2026-10-07 09:25:57 | INFO | train rows after dropping noise clips: 732, test rows: 216
+2026-10-07 09:25:58 | INFO | model ridge | features ['handcrafted', 'grammar', 'embedding'] | X shape (732, 794)
+2026-10-07 09:25:58 | INFO |   ridge fold  1 | train RMSE 0.4876 | val RMSE 0.6426 | val Pearson 0.7737
+2026-10-07 09:25:58 | INFO |   ridge fold  2 | train RMSE 0.4724 | val RMSE 0.7222 | val Pearson 0.7078
+2026-10-07 09:25:58 | INFO |   ridge fold  3 | train RMSE 0.4644 | val RMSE 0.7579 | val Pearson 0.6754
+2026-10-07 09:25:58 | INFO |   ridge fold  4 | train RMSE 0.4780 | val RMSE 0.6790 | val Pearson 0.7477
+2026-10-07 09:25:59 | INFO |   ridge fold  5 | train RMSE 0.4866 | val RMSE 0.6597 | val Pearson 0.7571
+2026-10-07 09:25:59 | INFO |   ridge fold  6 | train RMSE 0.4909 | val RMSE 0.6499 | val Pearson 0.7646
+2026-10-07 09:25:59 | INFO |   ridge fold  7 | train RMSE 0.4633 | val RMSE 0.7574 | val Pearson 0.6734
+2026-10-07 09:25:59 | INFO |   ridge fold  8 | train RMSE 0.4821 | val RMSE 0.6813 | val Pearson 0.7403
+2026-10-07 09:26:00 | INFO |   ridge fold  9 | train RMSE 0.4649 | val RMSE 0.7332 | val Pearson 0.6996
+2026-10-07 09:26:00 | INFO |   ridge fold 10 | train RMSE 0.4811 | val RMSE 0.6882 | val Pearson 0.7364
+2026-10-07 09:26:00 | INFO |   ridge fold 11 | train RMSE 0.4699 | val RMSE 0.7079 | val Pearson 0.7242
+2026-10-07 09:26:00 | INFO |   ridge fold 12 | train RMSE 0.4914 | val RMSE 0.6579 | val Pearson 0.7677
+2026-10-07 09:26:01 | INFO |   ridge fold 13 | train RMSE 0.4810 | val RMSE 0.6625 | val Pearson 0.7582
+2026-10-07 09:26:01 | INFO |   ridge fold 14 | train RMSE 0.4672 | val RMSE 0.7646 | val Pearson 0.6686
+2026-10-07 09:26:01 | INFO |   ridge fold 15 | train RMSE 0.4691 | val RMSE 0.7499 | val Pearson 0.6755
+2026-10-07 09:26:01 | INFO | ridge | full-fit train RMSE 0.4904 | OOF RMSE 0.6928 | OOF Pearson 0.7306
+2026-10-07 09:26:01 | INFO | model svr | features ['handcrafted', 'grammar', 'embedding'] | X shape (732, 794)
+2026-10-07 09:26:01 | INFO |   svr fold  1 | train RMSE 0.2130 | val RMSE 0.6487 | val Pearson 0.7676
+2026-10-07 09:26:02 | INFO |   svr fold  2 | train RMSE 0.1977 | val RMSE 0.7480 | val Pearson 0.6829
+2026-10-07 09:26:02 | INFO |   svr fold  3 | train RMSE 0.2087 | val RMSE 0.7751 | val Pearson 0.6533
+2026-10-07 09:26:02 | INFO |   svr fold  4 | train RMSE 0.2040 | val RMSE 0.7143 | val Pearson 0.7203
+2026-10-07 09:26:02 | INFO |   svr fold  5 | train RMSE 0.2108 | val RMSE 0.6642 | val Pearson 0.7619
+2026-10-07 09:26:02 | INFO |   svr fold  6 | train RMSE 0.2082 | val RMSE 0.6812 | val Pearson 0.7388
+2026-10-07 09:26:02 | INFO |   svr fold  7 | train RMSE 0.2038 | val RMSE 0.7395 | val Pearson 0.7005
+2026-10-07 09:26:03 | INFO |   svr fold  8 | train RMSE 0.2115 | val RMSE 0.6507 | val Pearson 0.7767
+2026-10-07 09:26:03 | INFO |   svr fold  9 | train RMSE 0.2024 | val RMSE 0.7320 | val Pearson 0.6926
+2026-10-07 09:26:03 | INFO |   svr fold 10 | train RMSE 0.2049 | val RMSE 0.7163 | val Pearson 0.7143
+2026-10-07 09:26:03 | INFO |   svr fold 11 | train RMSE 0.2030 | val RMSE 0.6746 | val Pearson 0.7454
+2026-10-07 09:26:03 | INFO |   svr fold 12 | train RMSE 0.2098 | val RMSE 0.7020 | val Pearson 0.7356
+2026-10-07 09:26:04 | INFO |   svr fold 13 | train RMSE 0.2049 | val RMSE 0.6881 | val Pearson 0.7386
+2026-10-07 09:26:04 | INFO |   svr fold 14 | train RMSE 0.2047 | val RMSE 0.7526 | val Pearson 0.6900
+2026-10-07 09:26:04 | INFO |   svr fold 15 | train RMSE 0.2115 | val RMSE 0.7143 | val Pearson 0.7091
+2026-10-07 09:26:05 | INFO | svr | full-fit train RMSE 0.2114 | OOF RMSE 0.7016 | OOF Pearson 0.7259
+2026-10-07 09:26:05 | INFO | model lgbm | features ['handcrafted', 'grammar', 'audio', 'embedding_pca', 'wavlm_pca', 'wavlm_large_pca'] | X shape (732, 101)
+2026-10-07 09:26:05 | INFO |   lgbm fold  1 | train RMSE 0.2054 | val RMSE 0.4677 | val Pearson 0.8888
+2026-10-07 09:26:06 | INFO |   lgbm fold  2 | train RMSE 0.1927 | val RMSE 0.6180 | val Pearson 0.7965
+2026-10-07 09:26:06 | INFO |   lgbm fold  3 | train RMSE 0.1998 | val RMSE 0.5681 | val Pearson 0.8318
+2026-10-07 09:26:07 | INFO |   lgbm fold  4 | train RMSE 0.2023 | val RMSE 0.5543 | val Pearson 0.8393
+2026-10-07 09:26:07 | INFO |   lgbm fold  5 | train RMSE 0.1973 | val RMSE 0.5714 | val Pearson 0.8258
+2026-10-07 09:26:08 | INFO |   lgbm fold  6 | train RMSE 0.2048 | val RMSE 0.5191 | val Pearson 0.8577
+2026-10-07 09:26:08 | INFO |   lgbm fold  7 | train RMSE 0.1980 | val RMSE 0.5951 | val Pearson 0.8138
+2026-10-07 09:26:09 | INFO |   lgbm fold  8 | train RMSE 0.1977 | val RMSE 0.5246 | val Pearson 0.8556
+2026-10-07 09:26:09 | INFO |   lgbm fold  9 | train RMSE 0.1967 | val RMSE 0.5841 | val Pearson 0.8184
+2026-10-07 09:26:09 | INFO |   lgbm fold 10 | train RMSE 0.1972 | val RMSE 0.5445 | val Pearson 0.8494
+2026-10-07 09:26:10 | INFO |   lgbm fold 11 | train RMSE 0.1950 | val RMSE 0.5491 | val Pearson 0.8419
+2026-10-07 09:26:10 | INFO |   lgbm fold 12 | train RMSE 0.2017 | val RMSE 0.5445 | val Pearson 0.8458
+2026-10-07 09:26:11 | INFO |   lgbm fold 13 | train RMSE 0.2024 | val RMSE 0.5428 | val Pearson 0.8455
+2026-10-07 09:26:11 | INFO |   lgbm fold 14 | train RMSE 0.1977 | val RMSE 0.5722 | val Pearson 0.8348
+2026-10-07 09:26:11 | INFO |   lgbm fold 15 | train RMSE 0.1963 | val RMSE 0.5982 | val Pearson 0.8074
+2026-10-07 09:26:12 | INFO | lgbm | full-fit train RMSE 0.2319 | OOF RMSE 0.5508 | OOF Pearson 0.8403
+2026-10-07 09:26:12 | INFO | model ridge_wavlm | features ['wavlm'] | X shape (732, 1536)
+2026-10-07 09:26:12 | INFO |   ridge_wavlm fold  1 | train RMSE 0.5232 | val RMSE 0.5300 | val Pearson 0.8573
+2026-10-07 09:26:12 | INFO |   ridge_wavlm fold  2 | train RMSE 0.4990 | val RMSE 0.6358 | val Pearson 0.7875
+2026-10-07 09:26:12 | INFO |   ridge_wavlm fold  3 | train RMSE 0.5081 | val RMSE 0.5839 | val Pearson 0.8210
+2026-10-07 09:26:12 | INFO |   ridge_wavlm fold  4 | train RMSE 0.5086 | val RMSE 0.6073 | val Pearson 0.8078
+2026-10-07 09:26:12 | INFO |   ridge_wavlm fold  5 | train RMSE 0.5102 | val RMSE 0.5859 | val Pearson 0.8229
+2026-10-07 09:26:13 | INFO |   ridge_wavlm fold  6 | train RMSE 0.5083 | val RMSE 0.6016 | val Pearson 0.8026
+2026-10-07 09:26:13 | INFO |   ridge_wavlm fold  7 | train RMSE 0.5006 | val RMSE 0.6145 | val Pearson 0.8084
+2026-10-07 09:26:13 | INFO |   ridge_wavlm fold  8 | train RMSE 0.5149 | val RMSE 0.5538 | val Pearson 0.8428
+2026-10-07 09:26:13 | INFO |   ridge_wavlm fold  9 | train RMSE 0.5119 | val RMSE 0.5812 | val Pearson 0.8261
+2026-10-07 09:26:13 | INFO |   ridge_wavlm fold 10 | train RMSE 0.5127 | val RMSE 0.6003 | val Pearson 0.8156
+2026-10-07 09:26:13 | INFO |   ridge_wavlm fold 11 | train RMSE 0.5130 | val RMSE 0.5491 | val Pearson 0.8410
+2026-10-07 09:26:13 | INFO |   ridge_wavlm fold 12 | train RMSE 0.5047 | val RMSE 0.5965 | val Pearson 0.8126
+2026-10-07 09:26:14 | INFO |   ridge_wavlm fold 13 | train RMSE 0.5174 | val RMSE 0.5659 | val Pearson 0.8363
+2026-10-07 09:26:14 | INFO |   ridge_wavlm fold 14 | train RMSE 0.5134 | val RMSE 0.6040 | val Pearson 0.8223
+2026-10-07 09:26:14 | INFO |   ridge_wavlm fold 15 | train RMSE 0.5013 | val RMSE 0.6338 | val Pearson 0.7827
+2026-10-07 09:26:14 | INFO | ridge_wavlm | full-fit train RMSE 0.5059 | OOF RMSE 0.5887 | OOF Pearson 0.8193
+2026-10-07 09:26:14 | INFO | model ridge_wavlm_large | features ['wavlm_large'] | X shape (732, 2048)
+2026-10-07 09:26:14 | INFO |   ridge_wavlm_large fold  1 | train RMSE 0.4714 | val RMSE 0.5032 | val Pearson 0.8686
+2026-10-07 09:26:15 | INFO |   ridge_wavlm_large fold  2 | train RMSE 0.4514 | val RMSE 0.5951 | val Pearson 0.8174
+2026-10-07 09:26:15 | INFO |   ridge_wavlm_large fold  3 | train RMSE 0.4572 | val RMSE 0.5651 | val Pearson 0.8332
+2026-10-07 09:26:15 | INFO |   ridge_wavlm_large fold  4 | train RMSE 0.4593 | val RMSE 0.5719 | val Pearson 0.8268
+2026-10-07 09:26:15 | INFO |   ridge_wavlm_large fold  5 | train RMSE 0.4600 | val RMSE 0.5588 | val Pearson 0.8378
+2026-10-07 09:26:15 | INFO |   ridge_wavlm_large fold  6 | train RMSE 0.4585 | val RMSE 0.5781 | val Pearson 0.8197
+2026-10-07 09:26:15 | INFO |   ridge_wavlm_large fold  7 | train RMSE 0.4603 | val RMSE 0.5579 | val Pearson 0.8508
+2026-10-07 09:26:16 | INFO |   ridge_wavlm_large fold  8 | train RMSE 0.4603 | val RMSE 0.5454 | val Pearson 0.8443
+2026-10-07 09:26:16 | INFO |   ridge_wavlm_large fold  9 | train RMSE 0.4588 | val RMSE 0.5556 | val Pearson 0.8392
+2026-10-07 09:26:16 | INFO |   ridge_wavlm_large fold 10 | train RMSE 0.4624 | val RMSE 0.5612 | val Pearson 0.8399
+2026-10-07 09:26:16 | INFO |   ridge_wavlm_large fold 11 | train RMSE 0.4640 | val RMSE 0.5278 | val Pearson 0.8512
+2026-10-07 09:26:16 | INFO |   ridge_wavlm_large fold 12 | train RMSE 0.4599 | val RMSE 0.5680 | val Pearson 0.8329
+2026-10-07 09:26:16 | INFO |   ridge_wavlm_large fold 13 | train RMSE 0.4645 | val RMSE 0.5401 | val Pearson 0.8548
+2026-10-07 09:26:16 | INFO |   ridge_wavlm_large fold 14 | train RMSE 0.4589 | val RMSE 0.5713 | val Pearson 0.8390
+2026-10-07 09:26:17 | INFO |   ridge_wavlm_large fold 15 | train RMSE 0.4527 | val RMSE 0.5995 | val Pearson 0.8063
+2026-10-07 09:26:17 | INFO | ridge_wavlm_large | full-fit train RMSE 0.4578 | OOF RMSE 0.5584 | OOF Pearson 0.8375
+2026-10-07 09:26:17 | INFO | deberta (precomputed) | train RMSE 0.1418 | OOF RMSE 0.5699 | OOF Pearson 0.8288
+2026-10-07 09:26:17 | INFO | blend weights: {'ridge': 0.0, 'svr': 0.0, 'lgbm': 0.269, 'ridge_wavlm': 0.0, 'ridge_wavlm_large': 0.341, 'deberta': 0.39} | calibration: y = 1.106 * p + -0.374
+2026-10-07 09:26:17 | INFO | blend before calibration | OOF RMSE 0.5046 | OOF Pearson 0.8713
+2026-10-07 09:26:17 | INFO | blend | train RMSE 0.2086 | OOF RMSE 0.4962 | OOF Pearson 0.8722
+2026-10-07 09:26:17 | INFO | wrote /mnt/d/SHL assignment - Harsh Tripathi/submission.csv (216, 2)
