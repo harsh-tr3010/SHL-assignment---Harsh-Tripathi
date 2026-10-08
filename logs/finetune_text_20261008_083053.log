@@ -1,0 +1,97 @@
+2026-10-08 08:30:53 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/finetune_text_20261008_083053.log
+2026-10-08 08:30:53 | INFO | args: {'model': '/mnt/d/models/deberta-v3-base', 'folds': 5, 'epochs': 5, 'lr': 2e-05, 'batch': 8, 'max_len': 320, 'seeds': [42, 7, 2024], 'accum': 1, 'grad_ckpt': False, 'name': 'deberta_topic', 'topic_cv': True, 'sample_weights': None, 'pseudo': None}
+2026-10-08 08:31:33 | INFO | seed 42 fold 1 epoch 1 | train MSE 0.6417 | val RMSE 0.6117 | val Pearson 0.8229
+2026-10-08 08:32:04 | INFO | seed 42 fold 1 epoch 2 | train MSE 0.3519 | val RMSE 0.6000 | val Pearson 0.8266
+2026-10-08 08:32:35 | INFO | seed 42 fold 1 epoch 3 | train MSE 0.1808 | val RMSE 0.5973 | val Pearson 0.8245
+2026-10-08 08:32:57 | INFO | seed 42 fold 1 epoch 4 | train MSE 0.0922 | val RMSE 0.5908 | val Pearson 0.8315
+2026-10-08 08:33:37 | INFO | seed 42 fold 1 epoch 5 | train MSE 0.0554 | val RMSE 0.5930 | val Pearson 0.8305
+2026-10-08 08:33:44 | INFO | seed 42 fold 1 final val RMSE 0.5930 (2.8 min)
+2026-10-08 08:34:12 | INFO | seed 42 fold 2 epoch 1 | train MSE 0.7412 | val RMSE 0.8840 | val Pearson 0.7196
+2026-10-08 08:34:41 | INFO | seed 42 fold 2 epoch 2 | train MSE 0.4317 | val RMSE 0.6274 | val Pearson 0.7707
+2026-10-08 08:35:07 | INFO | seed 42 fold 2 epoch 3 | train MSE 0.1949 | val RMSE 0.6151 | val Pearson 0.7746
+2026-10-08 08:35:30 | INFO | seed 42 fold 2 epoch 4 | train MSE 0.1081 | val RMSE 0.6495 | val Pearson 0.7704
+2026-10-08 08:35:50 | INFO | seed 42 fold 2 epoch 5 | train MSE 0.0614 | val RMSE 0.6336 | val Pearson 0.7749
+2026-10-08 08:35:54 | INFO | seed 42 fold 2 final val RMSE 0.6336 (2.2 min)
+2026-10-08 08:36:28 | INFO | seed 42 fold 3 epoch 1 | train MSE 0.6424 | val RMSE 0.6556 | val Pearson 0.7861
+2026-10-08 08:36:58 | INFO | seed 42 fold 3 epoch 2 | train MSE 0.3255 | val RMSE 0.7173 | val Pearson 0.7897
+2026-10-08 08:37:21 | INFO | seed 42 fold 3 epoch 3 | train MSE 0.1807 | val RMSE 0.6584 | val Pearson 0.7823
+2026-10-08 08:37:44 | INFO | seed 42 fold 3 epoch 4 | train MSE 0.0908 | val RMSE 0.6617 | val Pearson 0.7787
+2026-10-08 08:38:11 | INFO | seed 42 fold 3 epoch 5 | train MSE 0.0608 | val RMSE 0.6665 | val Pearson 0.7791
+2026-10-08 08:38:16 | INFO | seed 42 fold 3 final val RMSE 0.6665 (2.4 min)
+2026-10-08 08:38:44 | INFO | seed 42 fold 4 epoch 1 | train MSE 0.8295 | val RMSE 0.6439 | val Pearson 0.7906
+2026-10-08 08:39:11 | INFO | seed 42 fold 4 epoch 2 | train MSE 0.3891 | val RMSE 0.5798 | val Pearson 0.8387
+2026-10-08 08:39:36 | INFO | seed 42 fold 4 epoch 3 | train MSE 0.2333 | val RMSE 0.6682 | val Pearson 0.8269
+2026-10-08 08:40:00 | INFO | seed 42 fold 4 epoch 4 | train MSE 0.1288 | val RMSE 0.6039 | val Pearson 0.8406
+2026-10-08 08:40:24 | INFO | seed 42 fold 4 epoch 5 | train MSE 0.0859 | val RMSE 0.6048 | val Pearson 0.8327
+2026-10-08 08:40:29 | INFO | seed 42 fold 4 final val RMSE 0.6048 (2.2 min)
+2026-10-08 08:41:01 | INFO | seed 42 fold 5 epoch 1 | train MSE 0.6830 | val RMSE 0.7408 | val Pearson 0.7411
+2026-10-08 08:41:28 | INFO | seed 42 fold 5 epoch 2 | train MSE 0.3505 | val RMSE 0.6687 | val Pearson 0.7500
+2026-10-08 08:41:52 | INFO | seed 42 fold 5 epoch 3 | train MSE 0.2037 | val RMSE 0.7082 | val Pearson 0.7338
+2026-10-08 08:42:18 | INFO | seed 42 fold 5 epoch 4 | train MSE 0.0884 | val RMSE 0.6934 | val Pearson 0.7608
+2026-10-08 08:42:42 | INFO | seed 42 fold 5 epoch 5 | train MSE 0.0566 | val RMSE 0.6738 | val Pearson 0.7553
+2026-10-08 08:42:48 | INFO | seed 42 fold 5 final val RMSE 0.6738 (2.3 min)
+2026-10-08 08:42:48 | INFO | seed 42 OOF RMSE 0.6350 | OOF Pearson 0.7924
+2026-10-08 08:43:16 | INFO | seed 7 fold 1 epoch 1 | train MSE 0.6701 | val RMSE 0.6715 | val Pearson 0.8149
+2026-10-08 08:43:38 | INFO | seed 7 fold 1 epoch 2 | train MSE 0.3400 | val RMSE 0.6097 | val Pearson 0.8165
+2026-10-08 08:44:01 | INFO | seed 7 fold 1 epoch 3 | train MSE 0.1718 | val RMSE 0.6028 | val Pearson 0.8321
+2026-10-08 08:44:26 | INFO | seed 7 fold 1 epoch 4 | train MSE 0.0949 | val RMSE 0.6064 | val Pearson 0.8219
+2026-10-08 08:44:50 | INFO | seed 7 fold 1 epoch 5 | train MSE 0.0553 | val RMSE 0.6062 | val Pearson 0.8263
+2026-10-08 08:44:55 | INFO | seed 7 fold 1 final val RMSE 0.6062 (2.1 min)
+2026-10-08 08:45:22 | INFO | seed 7 fold 2 epoch 1 | train MSE 0.7124 | val RMSE 0.6342 | val Pearson 0.7813
+2026-10-08 08:45:46 | INFO | seed 7 fold 2 epoch 2 | train MSE 0.3511 | val RMSE 0.7361 | val Pearson 0.7926
+2026-10-08 08:46:09 | INFO | seed 7 fold 2 epoch 3 | train MSE 0.1883 | val RMSE 0.6537 | val Pearson 0.7560
+2026-10-08 08:46:32 | INFO | seed 7 fold 2 epoch 4 | train MSE 0.0940 | val RMSE 0.5941 | val Pearson 0.7813
+2026-10-08 08:46:53 | INFO | seed 7 fold 2 epoch 5 | train MSE 0.0646 | val RMSE 0.6087 | val Pearson 0.7818
+2026-10-08 08:46:58 | INFO | seed 7 fold 2 final val RMSE 0.6087 (2.0 min)
+2026-10-08 08:47:25 | INFO | seed 7 fold 3 epoch 1 | train MSE 0.7046 | val RMSE 0.6948 | val Pearson 0.7488
+2026-10-08 08:47:56 | INFO | seed 7 fold 3 epoch 2 | train MSE 0.3512 | val RMSE 0.6588 | val Pearson 0.7820
+2026-10-08 08:48:23 | INFO | seed 7 fold 3 epoch 3 | train MSE 0.1852 | val RMSE 0.7040 | val Pearson 0.7857
+2026-10-08 08:48:45 | INFO | seed 7 fold 3 epoch 4 | train MSE 0.0985 | val RMSE 0.6447 | val Pearson 0.7896
+2026-10-08 08:49:07 | INFO | seed 7 fold 3 epoch 5 | train MSE 0.0638 | val RMSE 0.6715 | val Pearson 0.7900
+2026-10-08 08:49:12 | INFO | seed 7 fold 3 final val RMSE 0.6715 (2.2 min)
+2026-10-08 08:49:35 | INFO | seed 7 fold 4 epoch 1 | train MSE 0.7002 | val RMSE 0.6559 | val Pearson 0.7932
+2026-10-08 08:49:59 | INFO | seed 7 fold 4 epoch 2 | train MSE 0.3258 | val RMSE 0.6124 | val Pearson 0.8209
+2026-10-08 08:50:21 | INFO | seed 7 fold 4 epoch 3 | train MSE 0.1855 | val RMSE 0.7068 | val Pearson 0.8254
+2026-10-08 08:50:43 | INFO | seed 7 fold 4 epoch 4 | train MSE 0.1117 | val RMSE 0.6253 | val Pearson 0.8344
+2026-10-08 08:51:05 | INFO | seed 7 fold 4 epoch 5 | train MSE 0.0654 | val RMSE 0.6028 | val Pearson 0.8343
+2026-10-08 08:51:10 | INFO | seed 7 fold 4 final val RMSE 0.6028 (2.0 min)
+2026-10-08 08:51:34 | INFO | seed 7 fold 5 epoch 1 | train MSE 0.7068 | val RMSE 0.7243 | val Pearson 0.7375
+2026-10-08 08:51:57 | INFO | seed 7 fold 5 epoch 2 | train MSE 0.3408 | val RMSE 0.7589 | val Pearson 0.7464
+2026-10-08 08:52:20 | INFO | seed 7 fold 5 epoch 3 | train MSE 0.2265 | val RMSE 0.6762 | val Pearson 0.7470
+2026-10-08 08:52:55 | INFO | seed 7 fold 5 epoch 4 | train MSE 0.1088 | val RMSE 0.6663 | val Pearson 0.7730
+2026-10-08 08:53:25 | INFO | seed 7 fold 5 epoch 5 | train MSE 0.0712 | val RMSE 0.6584 | val Pearson 0.7657
+2026-10-08 08:53:31 | INFO | seed 7 fold 5 final val RMSE 0.6584 (2.3 min)
+2026-10-08 08:53:31 | INFO | seed 7 OOF RMSE 0.6284 | OOF Pearson 0.7933
+2026-10-08 08:53:56 | INFO | seed 2024 fold 1 epoch 1 | train MSE 0.7754 | val RMSE 0.6293 | val Pearson 0.8060
+2026-10-08 08:54:19 | INFO | seed 2024 fold 1 epoch 2 | train MSE 0.3389 | val RMSE 0.5747 | val Pearson 0.8396
+2026-10-08 08:54:41 | INFO | seed 2024 fold 1 epoch 3 | train MSE 0.1699 | val RMSE 0.5835 | val Pearson 0.8324
+2026-10-08 08:55:03 | INFO | seed 2024 fold 1 epoch 4 | train MSE 0.0916 | val RMSE 0.6621 | val Pearson 0.8155
+2026-10-08 08:55:26 | INFO | seed 2024 fold 1 epoch 5 | train MSE 0.0619 | val RMSE 0.6220 | val Pearson 0.8212
+2026-10-08 08:55:31 | INFO | seed 2024 fold 1 final val RMSE 0.6220 (2.0 min)
+2026-10-08 08:55:55 | INFO | seed 2024 fold 2 epoch 1 | train MSE 0.8599 | val RMSE 0.7259 | val Pearson 0.7638
+2026-10-08 08:56:17 | INFO | seed 2024 fold 2 epoch 2 | train MSE 0.3471 | val RMSE 0.6321 | val Pearson 0.7809
+2026-10-08 08:56:41 | INFO | seed 2024 fold 2 epoch 3 | train MSE 0.2178 | val RMSE 0.5869 | val Pearson 0.7850
+2026-10-08 08:57:02 | INFO | seed 2024 fold 2 epoch 4 | train MSE 0.0939 | val RMSE 0.6269 | val Pearson 0.7857
+2026-10-08 08:57:22 | INFO | seed 2024 fold 2 epoch 5 | train MSE 0.0575 | val RMSE 0.6075 | val Pearson 0.7875
+2026-10-08 08:57:27 | INFO | seed 2024 fold 2 final val RMSE 0.6075 (1.9 min)
+2026-10-08 08:57:51 | INFO | seed 2024 fold 3 epoch 1 | train MSE 0.7548 | val RMSE 0.7096 | val Pearson 0.7296
+2026-10-08 08:58:14 | INFO | seed 2024 fold 3 epoch 2 | train MSE 0.3341 | val RMSE 0.8423 | val Pearson 0.7670
+2026-10-08 08:58:42 | INFO | seed 2024 fold 3 epoch 3 | train MSE 0.1436 | val RMSE 0.6412 | val Pearson 0.7935
+2026-10-08 08:59:11 | INFO | seed 2024 fold 3 epoch 4 | train MSE 0.0832 | val RMSE 0.6823 | val Pearson 0.7918
+2026-10-08 08:59:33 | INFO | seed 2024 fold 3 epoch 5 | train MSE 0.0494 | val RMSE 0.6486 | val Pearson 0.7898
+2026-10-08 08:59:38 | INFO | seed 2024 fold 3 final val RMSE 0.6486 (2.2 min)
+2026-10-08 09:00:02 | INFO | seed 2024 fold 4 epoch 1 | train MSE 0.7999 | val RMSE 0.5934 | val Pearson 0.8316
+2026-10-08 09:00:24 | INFO | seed 2024 fold 4 epoch 2 | train MSE 0.3286 | val RMSE 0.6875 | val Pearson 0.7692
+2026-10-08 09:00:47 | INFO | seed 2024 fold 4 epoch 3 | train MSE 0.1668 | val RMSE 0.6321 | val Pearson 0.8049
+2026-10-08 09:01:09 | INFO | seed 2024 fold 4 epoch 4 | train MSE 0.1091 | val RMSE 0.5904 | val Pearson 0.8403
+2026-10-08 09:01:30 | INFO | seed 2024 fold 4 epoch 5 | train MSE 0.0688 | val RMSE 0.5898 | val Pearson 0.8363
+2026-10-08 09:01:36 | INFO | seed 2024 fold 4 final val RMSE 0.5898 (2.0 min)
+2026-10-08 09:02:00 | INFO | seed 2024 fold 5 epoch 1 | train MSE 0.7031 | val RMSE 0.6729 | val Pearson 0.7454
+2026-10-08 09:02:23 | INFO | seed 2024 fold 5 epoch 2 | train MSE 0.3466 | val RMSE 0.6693 | val Pearson 0.7604
+2026-10-08 09:02:45 | INFO | seed 2024 fold 5 epoch 3 | train MSE 0.1930 | val RMSE 0.6714 | val Pearson 0.7470
+2026-10-08 09:03:08 | INFO | seed 2024 fold 5 epoch 4 | train MSE 0.1038 | val RMSE 0.6727 | val Pearson 0.7493
+2026-10-08 09:03:32 | INFO | seed 2024 fold 5 epoch 5 | train MSE 0.0666 | val RMSE 0.6712 | val Pearson 0.7532
+2026-10-08 09:03:36 | INFO | seed 2024 fold 5 final val RMSE 0.6712 (2.0 min)
+2026-10-08 09:03:36 | INFO | seed 2024 OOF RMSE 0.6265 | OOF Pearson 0.7933
+2026-10-08 09:03:37 | INFO | deberta_topic (3 seed avg) train RMSE 0.1438 | OOF RMSE 0.6218 | OOF Pearson 0.7981
+2026-10-08 09:03:37 | INFO | saved deberta_topic OOF / test predictions

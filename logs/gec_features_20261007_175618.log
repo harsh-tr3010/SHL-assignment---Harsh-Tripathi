@@ -1,0 +1,19 @@
+2026-10-07 17:56:18 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/gec_features_20261007_175618.log
+2026-10-07 17:57:12 | INFO | model=/mnt/d/models/coedit-large batch=32
+2026-10-07 17:57:53 | INFO | train 512/3595 sentences (0.7 min)
+2026-10-07 17:58:25 | INFO | train 1024/3595 sentences (1.2 min)
+2026-10-07 17:59:05 | INFO | train 1536/3595 sentences (1.9 min)
+2026-10-07 17:59:41 | INFO | train 2048/3595 sentences (2.5 min)
+2026-10-07 18:00:32 | INFO | train 2560/3595 sentences (3.3 min)
+2026-10-07 18:01:37 | INFO | train 3072/3595 sentences (4.4 min)
+2026-10-07 18:03:51 | INFO | train 3584/3595 sentences (6.6 min)
+2026-10-07 18:04:01 | INFO | train 3595/3595 sentences (6.8 min)
+2026-10-07 18:04:03 | INFO | train done (769, 7) | mean edits per 100 words 11.99 (6.8 min)
+2026-10-07 18:04:03 | INFO |   example | Well, this, the playground is very beautiful and fun.  ->  Well, this playground is very beautiful and fun.
+2026-10-07 18:04:03 | INFO |   example | Market not only sells food essential or kitchen essential but also the things what we wear like clothes, shoes and many   ->  The market not only sells essential food or kitchen essentials but also the things we wear, like clothes, shoes, and man
+2026-10-07 18:04:03 | INFO |   example | This is my favorite place to visit because, growing up, I was a huge fan of the Harry Potter books and, subsequently, th  ->  This is my favorite place to visit because, growing up, I was a huge fan of the Harry Potter books and, subsequently, th
+2026-10-07 18:04:03 | INFO |   example | There are loads of people who want to buy.  ->  There are lots of people who want to buy them.
+2026-10-07 18:04:03 | INFO |   example | It's a game of different soccer teams from different clubs yeah and it's mostly suitable for two players and come agains  ->  It's a game of different soccer teams from different clubs, yeah, and it's mostly suitable for two players and comes aga
+2026-10-07 18:04:33 | INFO | test 512/989 sentences (0.5 min)
+2026-10-07 18:06:03 | INFO | test 989/989 sentences (2.0 min)
+2026-10-07 18:06:03 | INFO | test done (216, 7) | mean edits per 100 words 11.86 (2.0 min)

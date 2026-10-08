@@ -21,6 +21,11 @@ added to the final fits, labelled with the first run's predictions (weight 0.5),
 so the models also see test-condition audio and prompts. `--pseudo_weight 0`
 turns this off (v10b).
 
+Topic-aware blend: about half the test clips answer prompts that are rare in the
+training set (see topics.py). The blend weights and calibration are therefore
+chosen on topic-grouped OOF predictions (whole prompts held out) and applied to
+the models above. `--no_topic_blend` keeps the plain-CV weights (v14c).
+
 Validation: repeated stratified K-fold (stratified on the label) so every fold
 sees the full score range. Reported metrics: RMSE and Pearson r, the two
 leaderboard metrics.
@@ -35,7 +40,7 @@ from scipy.optimize import nnls
 from scipy.stats import pearsonr
 from sklearn.decomposition import PCA
 from sklearn.linear_model import Ridge
-from sklearn.model_selection import KFold, RepeatedStratifiedKFold
+from sklearn.model_selection import KFold, RepeatedStratifiedKFold, StratifiedGroupKFold
 from sklearn.pipeline import make_pipeline
 from sklearn.preprocessing import StandardScaler
 from sklearn.svm import SVR
@@ -51,7 +56,7 @@ SEED = 42
 TEXT_GROUPS = ["handcrafted", "grammar", "embedding"]
 TABULAR_GROUPS = ["handcrafted", "grammar", "audio", "embedding_pca"]
 # models trained elsewhere (finetune_text.py) that only provide OOF + test predictions
-PRECOMPUTED = ["deberta", "deberta_w", "deberta_large", "wavlm_ft", "wavlm_large_ft"]
+PRECOMPUTED = ["deberta", "deberta_w", "deberta_large", "wavlm_ft", "wavlm_large_ft", "deberta_topic"]
 
 
 def rmse(y, p):
@@ -138,10 +143,10 @@ def strat_bins(y):
 AUDIO_EMBEDDINGS = ["wavlm", "wavlm_large"]
 
 
-def make_models(use_llm=False, use_wavlm=True, use_svr_audio=False, duration_free=False):
+def make_models(use_llm=False, use_wavlm=True, use_svr_audio=False, duration_free=False, use_gec=False):
     # LLM-judge features are off by default: they did not improve CV (or the public LB)
     has = lambda g: (FEAT / f"train_{g}.parquet").exists()
-    tab = TABULAR_GROUPS + (["llm"] if use_llm and has("llm") else [])
+    tab = TABULAR_GROUPS + (["llm"] if use_llm and has("llm") else []) + (["gec"] if use_gec and has("gec") else [])
     if duration_free:
         tab = ["rates"] + [g for g in tab if g not in ("handcrafted", "audio")]
     speech = [g for g in AUDIO_EMBEDDINGS if use_wavlm and has(g)]
@@ -185,14 +190,22 @@ def fit(model, X, y, w=None):
     return model.fit(X, y, sample_weight=w)
 
 
-def cross_validate(build, X, y, folds=5, repeats=3, log=None, name="", w=None):
+def cv_splits(X, y, folds, repeats, groups=None):
+    """Stratified K-fold, repeated; with `groups`, whole topic clusters are held out
+    together (StratifiedGroupKFold) so validation mimics an unseen prompt."""
+    if groups is None:
+        return list(RepeatedStratifiedKFold(n_splits=folds, n_repeats=repeats, random_state=SEED).split(X, strat_bins(y)))
+    return [s for r in range(repeats)
+            for s in StratifiedGroupKFold(n_splits=folds, shuffle=True, random_state=SEED + r).split(X, strat_bins(y), groups)]
+
+
+def cross_validate(build, X, y, folds=5, repeats=3, log=None, name="", w=None, groups=None):
     """Repeated stratified K-fold. Returns OOF predictions (averaged over repeats)
     and a per-fold table of train/val metrics."""
     X, y = np.asarray(X), np.asarray(y)
-    cv = RepeatedStratifiedKFold(n_splits=folds, n_repeats=repeats, random_state=SEED)
     oof = np.zeros(len(y))
     rows = []
-    for k, (tr, va) in enumerate(cv.split(X, strat_bins(y)), 1):
+    for k, (tr, va) in enumerate(cv_splits(X, y, folds, repeats, groups), 1):
         m = fit(build(), X[tr], y[tr], None if w is None else w[tr])
         p_tr, p_va = m.predict(X[tr]), m.predict(X[va])
         oof[va] += p_va / repeats
@@ -216,8 +229,8 @@ def blend_weights(preds, y, sw=None):
 
 
 def run(folds=5, repeats=3, log=None, use_llm=False, use_wavlm=True, use_svr_audio=False,
-        shift_weights=True, exclude=("wavlm_ft", "deberta_w"), duration_free=False, fit_weights="train_shift_weight",
-        pseudo=None, pseudo_weight=1.0):
+        shift_weights=True, exclude=("wavlm_ft", "deberta_w", "deberta_large", "wavlm_large_ft", "deberta_topic"), duration_free=False, fit_weights="train_shift_weight",
+        pseudo=None, pseudo_weight=1.0, use_gec=False, topic_cv=False, drop=()):
     y, test_idx = load_labels()
     if log:
         log.info("train rows after dropping noise clips: %d, test rows: %d", len(y), len(test_idx))
@@ -229,6 +242,12 @@ def run(folds=5, repeats=3, log=None, use_llm=False, use_wavlm=True, use_svr_aud
     sw = pd.read_parquet(fpath).loc[y.index, "weight"].values if shift_weights else None
     if log and shift_weights:
         log.info("fitting with importance weights (covariate-shift correction)")
+    groups = pd.read_parquet(FEAT / "train_topic.parquet").loc[y.index, "topic"].values if topic_cv else None
+    if topic_cv:
+        # topic-grouped validation: use the DeBERTa trained on topic-grouped folds
+        exclude = tuple(e for e in exclude if e != "deberta_topic") + ("deberta",)
+        if log:
+            log.info("topic-grouped CV (%d topics)", len(set(groups)))
     ps = None
     if pseudo is not None:
         ps = (pd.read_csv(pseudo).set_index("filename")["label"].loc[test_idx].values
@@ -237,13 +256,14 @@ def run(folds=5, repeats=3, log=None, use_llm=False, use_wavlm=True, use_svr_aud
             log.info("pseudo-labels for the final refit (weight %.2f)", pseudo_weight)
 
     oof, test_pred, train_pred, fold_tables = {}, {}, {}, []
-    for name, (groups, build) in make_models(use_llm, use_wavlm, use_svr_audio, duration_free).items():
-        Xtr = load_features("train", groups, y.index)
-        Xte = load_features("test", groups, test_idx)
+    for name, (fgroups, build) in make_models(use_llm, use_wavlm, use_svr_audio, duration_free, use_gec).items():
+        fgroups = [g for g in fgroups if g not in drop]
+        Xtr = load_features("train", fgroups, y.index)
+        Xte = load_features("test", fgroups, test_idx)
         if log:
-            log.info("model %s | features %s | X shape %s", name, groups, Xtr.shape)
+            log.info("model %s | features %s | X shape %s", name, fgroups, Xtr.shape)
 
-        oof[name], ft = cross_validate(build, Xtr, y, folds, repeats, log, name, w=sw)
+        oof[name], ft = cross_validate(build, Xtr, y, folds, repeats, log, name, w=sw, groups=groups)
         fold_tables.append(ft)
 
         full = fit(build(), Xtr.values, y.values, sw)  # refit on all training data for test
@@ -315,6 +335,25 @@ def run(folds=5, repeats=3, log=None, use_llm=False, use_wavlm=True, use_svr_aud
     }
 
 
+def topic_blend(res, folds=5, repeats=3, log=None, **kw):
+    """Re-choose the blend weights and calibration on topic-grouped OOF predictions
+    (whole prompts held out, like the test set, where about half the clips answer
+    prompts that are rare in training) and apply them to the test predictions of
+    the standard models in `res`. Returns (test predictions, weights)."""
+    rt = run(folds, repeats, log, topic_cv=True, **kw)
+    oof_t = rt["oof"].drop(columns="blend").rename(columns={"deberta_topic": "deberta"})
+    names = list(oof_t.columns)
+    y = rt["y"].values
+    iw = pd.read_parquet(FEAT / "train_shift_weight.parquet").loc[rt["y"].index, "weight"].values
+    w = blend_weights([oof_t[n].values for n in names], y, iw)
+    a, b = np.polyfit(oof_t.values @ w, y, 1, w=np.sqrt(iw))
+    pred = np.clip(a * (res["test_pred"][names].values @ w) + b, 0, 5)
+    if log:
+        log.info("topic blend weights: %s | calibration: y = %.3f * p + %.3f",
+                 dict(zip(names, np.round(w, 3).tolist())), a, b)
+    return pred, dict(zip(names, w))
+
+
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--folds", type=int, default=5)
@@ -326,12 +365,18 @@ def main():
                     help="fit without the covariate-shift importance weights (reproduces v7)")
     ap.add_argument("--duration_free", action="store_true", help="per-minute rates instead of counts for LightGBM")
     ap.add_argument("--fit_weights", default="train_shift_weight", help="weights file used for fitting")
+    ap.add_argument("--gec", action="store_true", help="add grammatical-error-correction features to LightGBM")
+    ap.add_argument("--topic_cv", action="store_true", help="topic-grouped CV folds (artifacts/features/train_topic.parquet)")
+    ap.add_argument("--drop", nargs="*", default=[], help="feature groups to leave out of every model")
+    ap.add_argument("--no_topic_blend", action="store_true",
+                    help="keep the blend weights from the plain CV instead of the topic-grouped CV (v14c)")
     ap.add_argument("--pseudo", default=None, help="CSV of predicted test scores to add to the final refit")
     ap.add_argument("--pseudo_weight", type=float, default=0.5,
                     help="weight of the pseudo-labelled test clips (0 = no pseudo-labelling)")
-    ap.add_argument("--exclude", nargs="*", default=["wavlm_ft", "deberta_w"],
+    ap.add_argument("--exclude", nargs="*", default=["wavlm_ft", "deberta_w", "deberta_large", "wavlm_large_ft", "deberta_topic"],
                     help="precomputed models to leave out of the blend (fine-tuned WavLM-base: worse public LB; "
-                         "importance-weighted DeBERTa: zero blend weight)")
+                         "importance-weighted DeBERTa: zero blend weight; DeBERTa-large: tie on the public LB "
+                         "(0.3203 vs 0.3204); fine-tuned WavLM-large: zero blend weight)")
     args = ap.parse_args()
 
     OUT.mkdir(parents=True, exist_ok=True)
@@ -340,7 +385,8 @@ def main():
 
     kw = dict(use_llm=args.llm, use_wavlm=not args.no_wavlm, use_svr_audio=args.svr_audio,
               shift_weights=not args.no_shift_weights, exclude=args.exclude,
-              duration_free=args.duration_free, fit_weights=args.fit_weights)
+              duration_free=args.duration_free, fit_weights=args.fit_weights, use_gec=args.gec,
+              topic_cv=args.topic_cv, drop=tuple(args.drop))
     res = run(args.folds, args.repeats, log, **kw)
     if args.pseudo_weight > 0:
         # Pseudo-labelling: refit once more with the test clips added, labelled with the
@@ -351,7 +397,13 @@ def main():
     res["oof"].assign(label=res["y"]).to_csv(OUT / "oof.csv")
     res["folds"].to_csv(OUT / "fold_metrics.csv", index=False)
 
-    sub = pd.DataFrame({"filename": res["test_pred"].index, "label": res["test_pred"]["blend"].values})
+    final = res["test_pred"]["blend"].values
+    if not args.no_topic_blend and not args.topic_cv:
+        # Topic-aware blend (v18): weights chosen for unseen prompts. Public LB 0.3190
+        # vs 0.3204 with the plain-CV weights (v14c).
+        final, _ = topic_blend(res, args.folds, args.repeats, log, **{k: v for k, v in kw.items() if k != "topic_cv"})
+
+    sub = pd.DataFrame({"filename": res["test_pred"].index, "label": final})
     sub.to_csv(ROOT / "submission.csv", index=False)
     log.info("wrote %s %s", ROOT / "submission.csv", sub.shape)
 

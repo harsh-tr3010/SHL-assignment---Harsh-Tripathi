@@ -3,7 +3,7 @@
 SHL hiring challenge: predict a 0–5 grammar score for 45–60 s spoken English clips.
 Evaluated with RMSE (leaderboard) and Pearson correlation.
 
-**Final result:** public leaderboard RMSE 0.3204; cross-validated RMSE 0.507 (test-weighted 0.488, Pearson 0.868), training RMSE 0.229.
+**Final result:** public leaderboard RMSE 0.3190; cross-validated RMSE 0.507 (test-weighted 0.488, Pearson 0.868), training RMSE 0.229.
 
 The full write-up (approach, EDA, CV results, training RMSE, ablations, train/test shift analysis, error analysis,
 submission history) is in [`notebooks/grammar_scoring.ipynb`](notebooks/grammar_scoring.ipynb).
@@ -30,6 +30,9 @@ Each clip is looked at two ways: *what* was said and *how* it was said.
    clip gets an importance weight p(test|x)/p(train|x), used in every model fit, the blend and the calibration.
 7. **Pseudo-labelling**: a final refit adds the 216 test clips, labelled with the first-pass predictions at half weight,
    so the models also see test-condition audio and prompts.
+8. **Topic-aware blend**: clustering the transcripts shows that about half the test clips answer prompts that are rare
+   in training. The blend weights and calibration are chosen on topic-grouped CV (whole prompts held out, DeBERTa
+   retrained on those folds) and applied to the models above.
 
 The 37 training clips scored 0 are non-speech noise (no voiced segments, very high zero-crossing rate). No test clip
 has that profile, so they are excluded from training. Train and test reuse file names for different recordings, so the
@@ -43,10 +46,11 @@ two sets are never joined on file name.
 | v6 | WavLM layer chosen by CV | 0.505 | 0.3324 |
 | v7 | + WavLM-large | 0.496 | 0.3308 |
 | v10b | v7 + covariate-shift importance weights | 0.507 (test-weighted 0.488) | 0.3215 |
-| **v14c** | **v10b + pseudo-labelled test clips, weight 0.5 (final)** | **0.507 (test-weighted 0.488)** | **0.3204** |
+| v14c | v10b + pseudo-labelled test clips, weight 0.5 | 0.507 (test-weighted 0.488) | 0.3204 |
+| **v18** | **v14c with the blend chosen on topic-grouped CV (final)** | **unseen-topic CV 0.522** | **0.3190** |
 
 The notebook lists every submitted version, including the ones that did not help (LLM judge, SVR and fine-tuned audio
-models, weighted-loss DeBERTa, stronger importance weights).
+models, weighted-loss DeBERTa, stronger importance weights, DeBERTa-large, error-correction features, per-topic offsets).
 
 ## Layout
 
@@ -59,12 +63,15 @@ src/
   audio_embed.py      WavLM layer-wise embeddings                 -> artifacts/features/*_wavlm*.parquet
   select_layers.py    choose the WavLM layer by CV
   shift.py            adversarial validation + importance weights -> artifacts/features/train_shift_weight.parquet
-  train.py            CV, shift-weighted blend, calibration, pseudo-labelling -> submission.csv
+  topics.py           k-means topic clusters of the transcripts    -> artifacts/features/*_topic.parquet
+  train.py            CV, shift-weighted blend, pseudo-labelling, topic-aware blend -> submission.csv
+  gec_features.py     grammatical-error-correction features (tried, not used in the final model)
   finetune_audio.py   WavLM end-to-end fine-tuning (tried, not used in the final model)
   llm_judge.py        zero-shot LLM rubric scores (tried, not used in the final model)
   log_utils.py        file + console logging (logs/)
 kaggle/
   finetune_wavlm_large.py   WavLM-large fine-tuning for a 16 GB Kaggle GPU (tried)
+  finetune_deberta_large.py DeBERTa-v3-large fine-tuning for a 16 GB Kaggle GPU (tried)
 notebooks/
   grammar_scoring.ipynb
 logs/                 per-clip / per-fold / per-epoch logs of the runs
@@ -87,10 +94,13 @@ python src/select_layers.py --name wavlm
 python src/audio_embed.py --model microsoft/wavlm-large --name wavlm_large # ~25 min
 python src/select_layers.py --name wavlm_large
 python src/shift.py                                                         # importance weights
-python src/train.py                                                         # writes submission.csv (final, v14c)
+python src/topics.py                                                        # topic clusters
+python src/finetune_text.py --seeds 42 7 2024 --topic_cv --name deberta_topic  # ~35 min
+python src/train.py                                                         # writes submission.csv (final, v18)
 ```
 
-`train.py --pseudo_weight 0` reproduces v10b, and `train.py --pseudo_weight 0 --no_shift_weights` reproduces v7.
+`train.py --no_topic_blend` reproduces v14c, `--no_topic_blend --pseudo_weight 0` v10b, and
+`--no_topic_blend --pseudo_weight 0 --no_shift_weights` v7.
 
 Notes for this setup:
 - If faster-whisper cannot find `libcublas.so.12`, add the CUDA libraries shipped with the torch wheel

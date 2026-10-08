@@ -23,7 +23,7 @@ import numpy as np
 import pandas as pd
 import torch
 from scipy.stats import pearsonr
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedGroupKFold, StratifiedKFold
 from torch import nn
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoModel, AutoTokenizer, get_cosine_schedule_with_warmup
@@ -85,6 +85,8 @@ def main():
     ap.add_argument("--accum", type=int, default=1, help="gradient accumulation steps")
     ap.add_argument("--grad_ckpt", action="store_true", help="gradient checkpointing (needed for -large on 6 GB)")
     ap.add_argument("--name", default="deberta", help="output column / file name")
+    ap.add_argument("--topic_cv", action="store_true",
+                    help="group the folds by topic cluster (artifacts/features/train_topic.parquet)")
     ap.add_argument("--sample_weights", default=None,
                     help="parquet of per-clip training weights (e.g. train_shift_weight) for a weighted MSE loss")
     ap.add_argument("--pseudo", default=None,
@@ -130,10 +132,11 @@ def main():
     n_seeds = len(args.seeds)
 
     # each seed gets its own fold split and init; OOF / test predictions are averaged over seeds
+    groups = pd.read_parquet(OUT / "train_topic.parquet").loc[y.index, "topic"].values if args.topic_cv else None
+    make_cv = (lambda seed: StratifiedGroupKFold(n_splits=args.folds, shuffle=True, random_state=seed)) if args.topic_cv         else (lambda seed: StratifiedKFold(n_splits=args.folds, shuffle=True, random_state=seed))
     splits = [(seed, fold, tr, va)
               for seed in args.seeds
-              for fold, (tr, va) in enumerate(
-                  StratifiedKFold(n_splits=args.folds, shuffle=True, random_state=seed).split(X, strat_bins(yv)), 1)]
+              for fold, (tr, va) in enumerate(make_cv(seed).split(X, strat_bins(yv), groups), 1)]
 
     for seed, fold, tr, va in splits:
         if fold == 1:

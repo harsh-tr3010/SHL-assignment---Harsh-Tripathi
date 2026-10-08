@@ -1,0 +1,10 @@
+2026-10-08 08:30:38 | INFO | log file: /mnt/d/SHL assignment - Harsh Tripathi/logs/topics_20261008_083038.log
+2026-10-08 08:30:40 | INFO | topic 0 | train  34 | test  50 | mean label 2.72
+2026-10-08 08:30:40 | INFO | topic 1 | train  98 | test  21 | mean label 3.46
+2026-10-08 08:30:40 | INFO | topic 2 | train 138 | test  14 | mean label 3.59
+2026-10-08 08:30:40 | INFO | topic 3 | train 100 | test  20 | mean label 3.59
+2026-10-08 08:30:40 | INFO | topic 4 | train 118 | test  11 | mean label 3.40
+2026-10-08 08:30:40 | INFO | topic 5 | train  11 | test  57 | mean label 2.86
+2026-10-08 08:30:40 | INFO | topic 6 | train 132 | test  34 | mean label 3.52
+2026-10-08 08:30:40 | INFO | topic 7 | train 101 | test   9 | mean label 3.61
+2026-10-08 08:30:41 | INFO | saved topic clusters (k=8)
