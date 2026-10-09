@@ -3,7 +3,7 @@
 SHL hiring challenge: predict a 0–5 grammar score for 45–60 s spoken English clips.
 Evaluated with RMSE (leaderboard) and Pearson correlation.
 
-**Final result:** public leaderboard RMSE 0.3190; cross-validated RMSE 0.507 (test-weighted 0.488, Pearson 0.868), training RMSE 0.229.
+**Final result:** public leaderboard RMSE 0.3173; cross-validated RMSE 0.507 (test-weighted 0.488, Pearson 0.868), training RMSE 0.228.
 
 The full write-up (approach, EDA, CV results, training RMSE, ablations, train/test shift analysis, error analysis,
 submission history) is in [`notebooks/grammar_scoring.ipynb`](notebooks/grammar_scoring.ipynb).
@@ -17,8 +17,8 @@ Each clip is looked at two ways: *what* was said and *how* it was said.
 
 1. **Transcribe** with Whisper large-v3-turbo (faster-whisper, fp16). Decoding is pushed towards verbatim output
    (filler-heavy initial prompt, no conditioning on previous text) so grammatical errors, restarts and fillers are kept.
-2. **Text model**: DeBERTa-v3-base fine-tuned as a regressor on the transcripts (5-fold CV × 3 seeds, fixed 5 epochs,
-   no per-fold early stopping).
+2. **Text model**: DeBERTa-v3-base fine-tuned as a regressor on the transcripts (5-fold CV × 10 seeds, fixed 5 epochs,
+   no per-fold early stopping). Averaging 10 seeds instead of 3 steadies the strongest and noisiest model in the blend.
 3. **Speech model**: frozen WavLM (large: layer 21, base: layer 9, both chosen by CV); hidden states are
    mean/std-pooled over the clip, then a Ridge regressor.
 4. **Feature model**: LightGBM on interpretable features — fluency (speaking rate, pauses, fillers, repetitions,
@@ -47,10 +47,12 @@ two sets are never joined on file name.
 | v7 | + WavLM-large | 0.496 | 0.3308 |
 | v10b | v7 + covariate-shift importance weights | 0.507 (test-weighted 0.488) | 0.3215 |
 | v14c | v10b + pseudo-labelled test clips, weight 0.5 | 0.507 (test-weighted 0.488) | 0.3204 |
-| **v18** | **v14c with the blend chosen on topic-grouped CV (final)** | **unseen-topic CV 0.522** | **0.3190** |
+| v18 | v14c with the blend chosen on topic-grouped CV | unseen-topic CV 0.522 | 0.3190 |
+| **v23** | **v18 with DeBERTa averaged over 10 seeds (final)** | **unseen-topic CV 0.520** | **0.3173** |
 
 The notebook lists every submitted version, including the ones that did not help (LLM judge, SVR and fine-tuned audio
-models, weighted-loss DeBERTa, stronger importance weights, DeBERTa-large, error-correction features, per-topic offsets).
+models, weighted-loss DeBERTa, stronger importance weights, DeBERTa-large, error-correction features, per-topic offsets,
+a second Whisper transcript, Whisper encoder embeddings).
 
 ## Layout
 
@@ -70,8 +72,11 @@ src/
   llm_judge.py        zero-shot LLM rubric scores (tried, not used in the final model)
   log_utils.py        file + console logging (logs/)
 kaggle/
+  deberta_seeds.py          extra DeBERTa seeds on two Kaggle T4s (used for the 10-seed final model)
   finetune_wavlm_large.py   WavLM-large fine-tuning for a 16 GB Kaggle GPU (tried)
   finetune_deberta_large.py DeBERTa-v3-large fine-tuning for a 16 GB Kaggle GPU (tried)
+  second_transcript.py      second transcript with Whisper large-v3 + DeBERTa on it (tried)
+  whisper_embed.py          layer-wise Whisper encoder embeddings (tried, `train.py --whisper`)
 notebooks/
   grammar_scoring.ipynb
 logs/                 per-clip / per-fold / per-epoch logs of the runs
@@ -88,18 +93,18 @@ pip install -r requirements.txt
 python src/transcribe.py --model large-v3-turbo --compute_type float16     # ~40 min
 python src/audio_features.py
 python src/features.py
-python src/finetune_text.py --seeds 42 7 2024                              # ~35 min
+python src/finetune_text.py --seeds 42 7 2024 1 2 3 4 5 6 8                # ~2 h (or kaggle/deberta_seeds.py)
 python src/audio_embed.py --model microsoft/wavlm-base-plus --name wavlm   # ~9 min
 python src/select_layers.py --name wavlm
 python src/audio_embed.py --model microsoft/wavlm-large --name wavlm_large # ~25 min
 python src/select_layers.py --name wavlm_large
 python src/shift.py                                                         # importance weights
 python src/topics.py                                                        # topic clusters
-python src/finetune_text.py --seeds 42 7 2024 --topic_cv --name deberta_topic  # ~35 min
-python src/train.py                                                         # writes submission.csv (final, v18)
+python src/finetune_text.py --seeds 42 7 2024 1 2 3 4 5 6 8 --topic_cv --name deberta_topic  # ~2 h
+python src/train.py                                                         # writes submission.csv (final, v23)
 ```
 
-`train.py --no_topic_blend` reproduces v14c, `--no_topic_blend --pseudo_weight 0` v10b, and
+With 3 DeBERTa seeds (`--seeds 42 7 2024`) `train.py` reproduces v18; `--no_topic_blend` then gives v14c, `--no_topic_blend --pseudo_weight 0` v10b, and
 `--no_topic_blend --pseudo_weight 0 --no_shift_weights` v7.
 
 Notes for this setup:

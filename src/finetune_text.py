@@ -32,7 +32,6 @@ from log_utils import get_logger
 from train import SEED, load_labels, rmse, strat_bins
 
 ROOT = Path(__file__).resolve().parents[1]
-TRANSCRIPTS = ROOT / "artifacts" / "transcripts"
 OUT = ROOT / "artifacts" / "features"
 
 
@@ -85,10 +84,12 @@ def main():
     ap.add_argument("--accum", type=int, default=1, help="gradient accumulation steps")
     ap.add_argument("--grad_ckpt", action="store_true", help="gradient checkpointing (needed for -large on 6 GB)")
     ap.add_argument("--name", default="deberta", help="output column / file name")
+    ap.add_argument("--transcripts", default="transcripts", help="transcript folder under artifacts/")
     ap.add_argument("--topic_cv", action="store_true",
                     help="group the folds by topic cluster (artifacts/features/train_topic.parquet)")
     ap.add_argument("--sample_weights", default=None,
                     help="parquet of per-clip training weights (e.g. train_shift_weight) for a weighted MSE loss")
+    ap.add_argument("--pseudo_weight", type=float, default=0.5, help="loss weight of the pseudo-labelled clips")
     ap.add_argument("--pseudo", default=None,
                     help="CSV (filename,label) of predicted test scores to add as extra training rows")
     args = ap.parse_args()
@@ -100,7 +101,7 @@ def main():
     device = "cuda"
 
     y, test_idx = load_labels()
-    tx = {s: {r["filename"]: r["text"] for r in map(json.loads, open(TRANSCRIPTS / f"{s}.jsonl"))} for s in ["train", "test"]}
+    tx = {s: {r["filename"]: r["text"] for r in map(json.loads, open(ROOT / "artifacts" / args.transcripts / f"{s}.jsonl"))} for s in ["train", "test"]}
     X = [tx["train"][f] for f in y.index]
     Xte = [tx["test"][f] for f in test_idx]
     yv = y.values.astype(np.float32)
@@ -151,7 +152,7 @@ def main():
             {"params": model.head.parameters(), "lr": 1e-3},
         ], weight_decay=0.01)
         tr_loader = DataLoader(TextDS([X[i] for i in tr] + list(X_ps), np.concatenate([yv[tr], y_ps]) - mu,
-                                      np.concatenate([sw[tr], np.ones(len(y_ps), dtype=np.float32)])),
+                                      np.concatenate([sw[tr], np.full(len(y_ps), args.pseudo_weight, dtype=np.float32)])),
                                batch_size=args.batch, shuffle=True)
         va_loader = DataLoader(TextDS([X[i] for i in va]), batch_size=32)
         steps = len(tr_loader) * args.epochs // args.accum

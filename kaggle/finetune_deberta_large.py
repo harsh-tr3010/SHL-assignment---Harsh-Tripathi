@@ -19,13 +19,15 @@ import numpy as np
 import pandas as pd
 import torch
 from scipy.stats import pearsonr
-from sklearn.model_selection import StratifiedKFold
+from sklearn.model_selection import StratifiedGroupKFold, StratifiedKFold
 from torch import nn
 from torch.utils.data import DataLoader, Dataset
 from transformers import AutoModel, AutoTokenizer, get_cosine_schedule_with_warmup
 
 MODEL = "microsoft/deberta-v3-large"
-NAME = "deberta_large"
+# TOPIC_CV: hold out whole prompts in each fold (needs train_topic.parquet in the dataset)
+TOPIC_CV = True
+NAME = "deberta_large_topic" if TOPIC_CV else "deberta_large"
 FOLDS, EPOCHS, LR, HEAD_LR, BATCH, ACCUM, MAX_LEN = 5, 5, 1e-5, 5e-4, 4, 2, 320
 SEEDS = [42, 7, 2024]
 OUT = Path("/kaggle/working")
@@ -104,6 +106,7 @@ def main():
     X = [tx["train"][f] for f in train.filename]
     Xte = [tx["test"][f] for f in test.filename]
     y = train.label.values.astype(np.float32)
+    groups = (pd.read_parquet(find("train_topic.parquet")).loc[train.filename, "topic"].values if TOPIC_CV else None)
     mu = float(y.mean())
 
     tok = AutoTokenizer.from_pretrained(MODEL)
@@ -117,8 +120,9 @@ def main():
         torch.manual_seed(seed)
         np.random.seed(seed)
         seed_oof = np.zeros(len(y))
-        skf = StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=seed)
-        for fold, (tr, va) in enumerate(skf.split(X, strat_bins(y)), 1):
+        skf = (StratifiedGroupKFold(n_splits=FOLDS, shuffle=True, random_state=seed) if TOPIC_CV
+               else StratifiedKFold(n_splits=FOLDS, shuffle=True, random_state=seed))
+        for fold, (tr, va) in enumerate(skf.split(X, strat_bins(y), groups), 1):
             t0 = time.time()
             model = Regressor(MODEL).to(device)
             opt = torch.optim.AdamW([

@@ -7,7 +7,7 @@ __pycache__/
 artifacts/cache/
 
 # competition-derived data and test predictions are not published
-artifacts/transcripts/
+artifacts/transcripts*/
 artifacts/features/
 artifacts/predictions/
 submissions/

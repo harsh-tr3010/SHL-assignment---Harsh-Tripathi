@@ -22,7 +22,6 @@ from log_utils import get_logger
 
 ROOT = Path(__file__).resolve().parents[1]
 DATA = ROOT / "data"
-OUT = ROOT / "artifacts" / "transcripts"
 
 VERBATIM_PROMPT = "Umm, so, uh, I- I was like, you know... I goes there and, hmm, we was talking."
 
@@ -60,17 +59,19 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("--model", default="large-v3")
     ap.add_argument("--compute_type", default="int8_float16")
+    ap.add_argument("--out", default="transcripts", help="output folder under artifacts/ (e.g. transcripts_v3)")
     args = ap.parse_args()
+    out_dir = ROOT / "artifacts" / args.out
 
     log = get_logger("transcribe")
     log.info("model=%s compute_type=%s", args.model, args.compute_type)
 
-    OUT.mkdir(parents=True, exist_ok=True)
+    out_dir.mkdir(parents=True, exist_ok=True)
     model = WhisperModel(args.model, device="cuda", compute_type=args.compute_type)
 
     for split in ["train", "test"]:
         df = pd.read_csv(DATA / f"{split}.csv")
-        out_path = OUT / f"{split}.jsonl"
+        out_path = out_dir / f"{split}.jsonl"
 
         # resume support: skip files already transcribed
         done = set()

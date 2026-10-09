@@ -56,7 +56,7 @@ SEED = 42
 TEXT_GROUPS = ["handcrafted", "grammar", "embedding"]
 TABULAR_GROUPS = ["handcrafted", "grammar", "audio", "embedding_pca"]
 # models trained elsewhere (finetune_text.py) that only provide OOF + test predictions
-PRECOMPUTED = ["deberta", "deberta_w", "deberta_large", "wavlm_ft", "wavlm_large_ft", "deberta_topic"]
+PRECOMPUTED = ["deberta", "deberta_w", "deberta_large", "wavlm_ft", "wavlm_large_ft", "deberta_topic", "deberta_topic_ps", "deberta_large_topic"]
 
 
 def rmse(y, p):
@@ -141,9 +141,11 @@ def strat_bins(y):
 
 
 AUDIO_EMBEDDINGS = ["wavlm", "wavlm_large"]
+WHISPER_EMBEDDINGS = ["whisper_large", "whisper_medium"]  # Whisper encoder states (kaggle/whisper_embed.py)
 
 
-def make_models(use_llm=False, use_wavlm=True, use_svr_audio=False, duration_free=False, use_gec=False):
+def make_models(use_llm=False, use_wavlm=True, use_svr_audio=False, duration_free=False, use_gec=False,
+                use_whisper=False):
     # LLM-judge features are off by default: they did not improve CV (or the public LB)
     has = lambda g: (FEAT / f"train_{g}.parquet").exists()
     tab = TABULAR_GROUPS + (["llm"] if use_llm and has("llm") else []) + (["gec"] if use_gec and has("gec") else [])
@@ -163,6 +165,8 @@ def make_models(use_llm=False, use_wavlm=True, use_svr_audio=False, duration_fre
             ),
         ),
     }
+    if use_whisper:
+        speech = speech + [g for g in WHISPER_EMBEDDINGS if has(g)]
     for g in speech:
         # speech-only model: a separate view of the clip for the blend
         models[f"ridge_{g}"] = ([g], lambda: make_pipeline(StandardScaler(), Ridge(alpha=3000.0)))
@@ -229,8 +233,9 @@ def blend_weights(preds, y, sw=None):
 
 
 def run(folds=5, repeats=3, log=None, use_llm=False, use_wavlm=True, use_svr_audio=False,
-        shift_weights=True, exclude=("wavlm_ft", "deberta_w", "deberta_large", "wavlm_large_ft", "deberta_topic"), duration_free=False, fit_weights="train_shift_weight",
-        pseudo=None, pseudo_weight=1.0, use_gec=False, topic_cv=False, drop=()):
+        shift_weights=True, exclude=("wavlm_ft", "deberta_w", "deberta_large", "wavlm_large_ft", "deberta_topic", "deberta_topic_ps",
+                 "deberta_large_topic"), duration_free=False, fit_weights="train_shift_weight",
+        pseudo=None, pseudo_weight=1.0, use_gec=False, topic_cv=False, drop=(), use_whisper=False):
     y, test_idx = load_labels()
     if log:
         log.info("train rows after dropping noise clips: %d, test rows: %d", len(y), len(test_idx))
@@ -256,7 +261,7 @@ def run(folds=5, repeats=3, log=None, use_llm=False, use_wavlm=True, use_svr_aud
             log.info("pseudo-labels for the final refit (weight %.2f)", pseudo_weight)
 
     oof, test_pred, train_pred, fold_tables = {}, {}, {}, []
-    for name, (fgroups, build) in make_models(use_llm, use_wavlm, use_svr_audio, duration_free, use_gec).items():
+    for name, (fgroups, build) in make_models(use_llm, use_wavlm, use_svr_audio, duration_free, use_gec, use_whisper).items():
         fgroups = [g for g in fgroups if g not in drop]
         Xtr = load_features("train", fgroups, y.index)
         Xte = load_features("test", fgroups, test_idx)
@@ -366,6 +371,7 @@ def main():
     ap.add_argument("--duration_free", action="store_true", help="per-minute rates instead of counts for LightGBM")
     ap.add_argument("--fit_weights", default="train_shift_weight", help="weights file used for fitting")
     ap.add_argument("--gec", action="store_true", help="add grammatical-error-correction features to LightGBM")
+    ap.add_argument("--whisper", action="store_true", help="add Ridge models on the Whisper encoder embeddings")
     ap.add_argument("--topic_cv", action="store_true", help="topic-grouped CV folds (artifacts/features/train_topic.parquet)")
     ap.add_argument("--drop", nargs="*", default=[], help="feature groups to leave out of every model")
     ap.add_argument("--no_topic_blend", action="store_true",
@@ -373,7 +379,8 @@ def main():
     ap.add_argument("--pseudo", default=None, help="CSV of predicted test scores to add to the final refit")
     ap.add_argument("--pseudo_weight", type=float, default=0.5,
                     help="weight of the pseudo-labelled test clips (0 = no pseudo-labelling)")
-    ap.add_argument("--exclude", nargs="*", default=["wavlm_ft", "deberta_w", "deberta_large", "wavlm_large_ft", "deberta_topic"],
+    ap.add_argument("--exclude", nargs="*", default=["wavlm_ft", "deberta_w", "deberta_large", "wavlm_large_ft", "deberta_topic", "deberta_topic_ps",
+                             "deberta_large_topic"],
                     help="precomputed models to leave out of the blend (fine-tuned WavLM-base: worse public LB; "
                          "importance-weighted DeBERTa: zero blend weight; DeBERTa-large: tie on the public LB "
                          "(0.3203 vs 0.3204); fine-tuned WavLM-large: zero blend weight)")
@@ -385,7 +392,7 @@ def main():
 
     kw = dict(use_llm=args.llm, use_wavlm=not args.no_wavlm, use_svr_audio=args.svr_audio,
               shift_weights=not args.no_shift_weights, exclude=args.exclude,
-              duration_free=args.duration_free, fit_weights=args.fit_weights, use_gec=args.gec,
+              duration_free=args.duration_free, fit_weights=args.fit_weights, use_gec=args.gec, use_whisper=args.whisper,
               topic_cv=args.topic_cv, drop=tuple(args.drop))
     res = run(args.folds, args.repeats, log, **kw)
     if args.pseudo_weight > 0:
